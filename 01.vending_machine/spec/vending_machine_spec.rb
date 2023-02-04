@@ -8,33 +8,81 @@ RSpec.describe VendingMachine do
     @vending_machine = VendingMachine.new
   end
 
-  example '自販機のインスタンスを作ることができる' do
-    expect(@vending_machine).to be_truthy
+  context 'お金の扱い' do
+    example '自販機のインスタンスを作ることができる' do
+      expect(@vending_machine).to be_truthy
+    end
+
+    example '投入金額の総額を返す' do
+      @vending_machine.insert(100)
+      @vending_machine.insert(50)
+      expect(@vending_machine.total).to eq 150
+    end
+
+    example '払い戻し操作を行うと投入金額の総額が返ってくる' do
+      expect(@vending_machine.insert(100)).to eq 0
+      expect(@vending_machine.payback).to eq 100
+      expect(@vending_machine.total).to eq 0
+    end
+
+    example '扱えない金種なら返却する' do
+      expect(@vending_machine.insert(1)).to eq 1
+      expect(@vending_machine.total).to eq 0
+    end
   end
 
-  example '投入金額の総額を返す' do
-    @vending_machine.insert(100)
-    @vending_machine.insert(50)
-    expect(@vending_machine.total).to eq 150
-  end
+  context 'コーラを購入する' do
+    before do
+      @coke = Drink.new(120, 'coke')
+    end
 
-  example '払い戻し操作を行うと投入金額の総額が返ってくる' do
-    expect(@vending_machine.insert(100)).to eq 0
-    expect(@vending_machine.payback).to eq 100
-    expect(@vending_machine.total).to eq 0
-  end
+    example 'Drinkクラスのインスタンスが作れる' do
+      expect(@coke).to be_truthy
+    end
 
-  example '扱えない金種なら返却する' do
-    expect(@vending_machine.insert(1)).to eq 1
-    expect(@vending_machine.total).to eq 0
-  end
+    example '在庫のドリンク情報がわかる' do
+      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }])
+    end
 
-  example 'Drinkクラスのインスタンスが作れる' do
-    drink = Drink.new(120, 'coke')
-    expect(drink).to be_truthy
-  end
+    example 'コーラを1本買うと在庫が1本減って売上が120円増える' do
+      @vending_machine.insert(500)
+      expect(@vending_machine.purchasable?(@coke)).to eq true
 
-  example '在庫のドリンク情報がわかる' do
-    expect(@vending_machine.current_stock).to eq ([{name: 'coke', price: 120, quantity: 5}])
+      @vending_machine.purchase(@coke)
+      expect(@vending_machine.total).to eq 380
+      expect(@vending_machine.sale_amount).to eq 120
+      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 4 }])
+    end
+
+    example 'コーラを1本買った後のおつりが返ってくる' do
+      @vending_machine.insert(500)
+      @vending_machine.purchase(@coke)
+
+      expect(@vending_machine.payback).to eq 380
+    end
+
+    example '購入金額が足りない時は購入できず、在庫や売り上げも変わらない' do
+      @vending_machine.insert(100)
+      expect(@vending_machine.purchasable?(@coke)).to eq false
+
+      @vending_machine.purchase(@coke)
+      expect(@vending_machine.sale_amount).to eq 0
+      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }])
+    end
+
+    example '在庫が足りない時は購入できず、在庫や売り上げも変わらない' do
+      @vending_machine.insert(1000)
+      5.times { @vending_machine.purchase(@coke) }
+      @vending_machine.payback
+      expect(@vending_machine.sale_amount).to eq 600
+      expect(@vending_machine.current_stock).to eq([])
+
+      @vending_machine.insert(500)
+      expect(@vending_machine.purchasable?(@coke)).to eq false
+
+      @vending_machine.purchase(@coke)
+      expect(@vending_machine.sale_amount).to eq 600
+      expect(@vending_machine.current_stock).to eq([])
+    end
   end
 end
