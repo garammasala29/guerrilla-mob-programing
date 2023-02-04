@@ -3,12 +3,12 @@
 class VendingMachine
   PERMITTED_MONEY = [10, 50, 100, 500, 1000].freeze
 
-  attr_reader :total
+  attr_reader :total, :sale_amount
 
   def initialize
     @total = 0
     @stock = 5.times.map { Drink.new(120, 'coke') }
-    # @stock = Array.new(5, Drink.new(120, 'coke'))
+    @sale_amount = 0
   end
 
   def insert(money)
@@ -31,6 +31,22 @@ class VendingMachine
     uniq_stock = @stock.uniq(&:name)
     uniq_stock.each.map do |drink|
       {name: drink.name, price: drink.price, quantity: quantity(drink)}
+    end
+  end
+
+  def purchasable?(drink)
+    if @total >= drink.price && quantity(drink) >= 1
+      true
+    else
+      false
+    end
+  end
+
+  def purchase(drink)
+    if purchasable?(drink)
+      @total -= drink.price
+      @sale_amount += drink.price
+      @stock.pop
     end
   end
 
