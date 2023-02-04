@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/vending_machine'
+require_relative '../lib/drink'
 
 RSpec.describe VendingMachine do
   before do
@@ -26,5 +27,14 @@ RSpec.describe VendingMachine do
   example '扱えない金種なら返却する' do
     expect(@vending_machine.insert(1)).to eq 1
     expect(@vending_machine.total).to eq 0
+  end
+
+  example 'Drinkクラスのインスタンスが作れる' do
+    drink = Drink.new(120, 'coke')
+    expect(drink).to be_truthy
+  end
+
+  example '在庫のドリンク情報がわかる' do
+    expect(@vending_machine.current_stock).to eq ([{name: 'coke', price: 120, quantity: 5}])
   end
 end

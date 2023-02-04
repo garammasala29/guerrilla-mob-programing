@@ -7,6 +7,8 @@ class VendingMachine
 
   def initialize
     @total = 0
+    @stock = 5.times.map { Drink.new(120, 'coke') }
+    # @stock = Array.new(5, Drink.new(120, 'coke'))
   end
 
   def insert(money)
@@ -22,5 +24,21 @@ class VendingMachine
     change = @total
     @total = 0
     change
+  end
+
+  def current_stock
+    # [{name: 'coke', price: 120, quantity: 5}, {name: 'redbull', price: 120, quantity: 5}]
+    uniq_stock = @stock.uniq(&:name)
+    uniq_stock.each.map do |drink|
+      {name: drink.name, price: drink.price, quantity: quantity(drink)}
+    end
+  end
+
+  private
+
+  def quantity(drink)
+    @stock.count do |stock_drink|
+      stock_drink.name == drink.name
+    end
   end
 end
