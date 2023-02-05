@@ -7,7 +7,11 @@ class VendingMachine
 
   def initialize
     @total = 0
-    @stock = 5.times.map { Drink.new(120, 'coke') }
+    @stock = [
+      *5.times.map { Drink.new(120, 'coke') },
+      *5.times.map { Drink.new(200, 'red_bull') },
+      *5.times.map { Drink.new(100, 'water') }
+    ]
     @sale_amount = 0
   end
 
@@ -26,14 +30,6 @@ class VendingMachine
     change
   end
 
-  def current_stock
-    # [{name: 'coke', price: 120, quantity: 5}, {name: 'redbull', price: 120, quantity: 5}]
-    uniq_stock = @stock.uniq(&:name)
-    uniq_stock.each.map do |drink|
-      {name: drink.name, price: drink.price, quantity: quantity(drink)}
-    end
-  end
-
   def purchasable?(drink)
     if @total >= drink.price && quantity(drink) >= 1
       true
@@ -46,7 +42,22 @@ class VendingMachine
     if purchasable?(drink)
       @total -= drink.price
       @sale_amount += drink.price
-      @stock.pop
+      delete_drink_index = @stock.index{ _1.name == drink.name }
+      @stock.delete_at(delete_drink_index)
+    end
+  end
+
+  def purchase_list
+    current_stock.map do |drink|
+      drink[:name] if drink[:quantity] > 0 && drink[:price] > @total
+    end
+  end
+
+  def current_stock
+    # [{name: 'coke', price: 120, quantity: 5}, {name: 'redbull', price: 120, quantity: 5}]
+    uniq_stock = @stock.uniq(&:name)
+    uniq_stock.each.map do |drink|
+      {name: drink.name, price: drink.price, quantity: quantity(drink)}
     end
   end
 

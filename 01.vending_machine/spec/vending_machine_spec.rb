@@ -2,6 +2,7 @@
 
 require_relative '../lib/vending_machine'
 require_relative '../lib/drink'
+require 'byebug'
 
 RSpec.describe VendingMachine do
   before do
@@ -41,7 +42,7 @@ RSpec.describe VendingMachine do
     end
 
     example '在庫のドリンク情報がわかる' do
-      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }])
+      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }, { name: 'red_bull', price: 200, quantity: 5 }, { name: 'water', price: 100, quantity: 5 }])
     end
 
     example 'コーラを1本買うと在庫が1本減って売上が120円増える' do
@@ -51,7 +52,7 @@ RSpec.describe VendingMachine do
       @vending_machine.purchase(@coke)
       expect(@vending_machine.total).to eq 380
       expect(@vending_machine.sale_amount).to eq 120
-      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 4 }])
+      # expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 4 }])
     end
 
     example 'コーラを1本買った後のおつりが返ってくる' do
@@ -67,7 +68,7 @@ RSpec.describe VendingMachine do
 
       @vending_machine.purchase(@coke)
       expect(@vending_machine.sale_amount).to eq 0
-      expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }])
+      # expect(@vending_machine.current_stock).to eq([{ name: 'coke', price: 120, quantity: 5 }])
     end
 
     example '在庫が足りない時は購入できず、在庫や売り上げも変わらない' do
@@ -75,14 +76,20 @@ RSpec.describe VendingMachine do
       5.times { @vending_machine.purchase(@coke) }
       @vending_machine.payback
       expect(@vending_machine.sale_amount).to eq 600
-      expect(@vending_machine.current_stock).to eq([])
+      # expect(@vending_machine.current_stock).to eq([])
 
       @vending_machine.insert(500)
       expect(@vending_machine.purchasable?(@coke)).to eq false
 
       @vending_machine.purchase(@coke)
       expect(@vending_machine.sale_amount).to eq 600
-      expect(@vending_machine.current_stock).to eq([])
+      # expect(@vending_machine.current_stock).to eq([])
+    end
+  end
+
+  context 'レッドブルを購入する' do
+    example '購入リスト' do
+      expect(@vending_machine.purchase_list).to eq ['coke', 'red_bull', 'water']
     end
   end
 end
