@@ -1,10 +1,16 @@
 # frozen_string_literal: true
 
 class Drink
-  attr_reader :price, :name
+  attr_reader :name
 
-  def initialize(price, name)
-    @price = price
+  def initialize(name:)
     @name = name
+  end
+
+  def self.price(name)
+    case name
+    when :coke
+      120
+    end
   end
 end
