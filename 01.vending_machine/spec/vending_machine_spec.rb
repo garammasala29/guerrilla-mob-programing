@@ -86,4 +86,34 @@ RSpec.describe VendingMachine do
       expect(Drink.price(:coke)).to eq 120
     end
   end
+
+  context '在庫管理' do
+    example '在庫に水5本を追加できる' do
+      @vending_machine.store(:water, 5)
+      expect(@vending_machine.stock[:water].size).to eq 5
+    end
+
+    example '在庫にコーラ3本を追加できる' do
+      @vending_machine.store(:coke, 34)
+      expect(@vending_machine.stock[:coke].size).to eq 39
+    end
+
+    example '投入金額、在庫の点で購入可能なドリンクのリストを取得できる' do
+      @vending_machine.store(:water, 5)
+      @vending_machine.store(:redbull, 5)
+
+      @vending_machine.insert 100
+      expect(@vending_machine.purchasable_stock).to eq([:water])
+      @vending_machine.insert 100
+      expect(@vending_machine.purchasable_stock).to eq([:coke, :redbull, :water])
+    end
+  end
+
+  context 'Drink' do
+    example '各ドリンクの価格を取得できる' do
+      expect(Drink.price :coke).to eq 120
+      expect(Drink.price :water).to eq 100
+      expect(Drink.price :redbull).to eq 200
+    end
+  end
 end

@@ -7,7 +7,7 @@ class VendingMachine
 
   def initialize
     @total = 0
-    coke = Drink.new(name: :coke)
+    coke = Drink.new(:coke)
     @stock = {coke.name => Array.new(5, coke)}
     @sale_amount = 0
   end
@@ -27,11 +27,23 @@ class VendingMachine
     change
   end
 
+  def store(name, quantity)
+    drink = Drink.new(name)
+    drinks = Array.new(quantity, drink)
+    if @stock[name]
+      @stock[name].push(*drinks)
+    else
+      @stock[name] = drinks
+    end
+  end
   def current_stock
-    # [{name: 'coke', price: 120, quantity: 5}, {name: 'redbull', price: 120, quantity: 5}]
     @stock.map do |name, drinks|
       {name: name, price: Drink.price(name), quantity: drinks.size}
     end
+  end
+
+  def purchasable_stock
+    @stock.keys.select {purchasable?(_1)}.sort
   end
 
   def purchasable?(name)

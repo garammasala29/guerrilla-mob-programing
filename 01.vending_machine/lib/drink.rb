@@ -3,7 +3,7 @@
 class Drink
   attr_reader :name
 
-  def initialize(name:)
+  def initialize(name)
     @name = name
   end
 
@@ -11,6 +11,12 @@ class Drink
     case name
     when :coke
       120
+    when :water
+      100
+    when :redbull
+      200
+    else
+      '指定されたドリンクの料金はありません'
     end
   end
 end
