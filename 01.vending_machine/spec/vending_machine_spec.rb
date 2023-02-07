@@ -51,6 +51,14 @@ RSpec.describe VendingMachine do
       expect(@vending_machine.current_stock).to eq([{ name: :coke, price: 120, quantity: 4 }])
     end
 
+    example '100円投入して水を購入すると投入金額（残額）が0円になっている' do
+      @vending_machine.store(:water, 5)
+
+      @vending_machine.insert(100)
+      @vending_machine.purchase(:water)
+      expect(@vending_machine.total).to eq 0
+    end
+
     example 'コーラを1本買った後のおつりが返ってくる' do
       @vending_machine.insert(500)
       @vending_machine.purchase(:coke)
