@@ -59,6 +59,7 @@ class VendingMachine
       @total -= Drink.price(name)
       @sale_amount += Drink.price(name)
       @stock[name].pop
+      puts "残額：#{@total}円"
     end
   end
 end
