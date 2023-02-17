@@ -22,10 +22,17 @@ RSpec.describe  Amidakuji do
   end
 
   example "各縦棒の間に横棒が1本以上ある" do
-    pending
+    columns = @lines[1, 10].map do |line|
+      line.split('|')
+    end.transpose
+
+    expect(columns[1]).to include '---'
+    expect(columns[2]).to include '---'
+    expect(columns[3]).to include '---'
+    expect(columns[4]).to include '---'
   end
 
   example "1行に横棒が2つ以上存在しない" do
-    pending
+    expect(@lines[2].count('---')).to be < 2
   end
 end
