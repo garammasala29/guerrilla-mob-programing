@@ -13,12 +13,12 @@ RSpec.describe  Amidakuji do
   end
 
   example "選択肢の下に縦棒が人数分の2倍の行数伸びている" do
-    expect(@lines[1]).to eq '｜   ｜   ｜   ｜   ｜'
-    expect(@lines[10]).to eq '｜   ｜   ｜   ｜   ｜'
+    expect(@lines[1]).to eq '|   |   |   |   |'
+    expect(@lines[10]).to eq '|   |   |   |   |'
   end
 
   example "最終行に当たりの記載が1つある" do
-    pending
+    expect(@lines[11].strip).to eq '@'
   end
 
   example "各縦棒の間に横棒が1本以上ある" do
