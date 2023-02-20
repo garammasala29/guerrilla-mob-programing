@@ -9,25 +9,33 @@ class Amidakuji
   def generate(number)
     alphabets = ('A'..'Z').to_a
     choices = [alphabets[0, number].join('   ')]
-    lines = choices + vertical_lines(number) + hit_mark(number)
+    lines = choices + ladder(number) + hit_mark(number)
     lines.join("\n")
   end
 
-  # 名前を再考する
-  def vertical_lines(number)
-    blank_rows = Array.new((number * 2) - 1, ['   ','   ','   ','   '])
-    rows = blank_rows << %w[--- --- --- ---]
-    cols = rows.transpose.map { |col| col.shuffle }
-    cols.transpose.map { |row| "|#{row.join('|')}|" }
+  def ladder(number)
+    row = Array.new(number - 2, '   ')
+    row << '---'
+    wip_rows = number.times.map { row.shuffle }
+    rows = connect_vertical_lines(wip_rows)
+    spacers = Array.new(number - 1, '   ')
+    rows.push(spacers).unshift(spacers).map { |row| "|#{row.join('|')}|" }
   end
 
+  def connect_vertical_lines(wip_rows)
+    shadow_cols = wip_rows.transpose.map do |col|
+      if col.include?('---')
+        Array.new(col.count, '   ')
+      else
+        Array.new(col.count - 1, '   ').push('---').shuffle
+      end
+    end
+    shadow_rows = shadow_cols.transpose
+    wip_rows.zip(shadow_rows).flatten(1)
+  end
   def hit_mark(number)
-    line = Array.new(number - 1, '   ')
+    line = Array.new(number - 1, '    ')
     line << '@   '
     [line.shuffle.join]
-    # 当たりが2列目の時にスペーサーがずれるのをどうにかする
   end
 end
-
-# ['A   B   C   D   E', '|  |  |  |  |', '|  |  |  |  |', '|  |  |  |  |']
-# '|  |  |  |  |'.scan(/  /)[randam_number].gsub(  , ---)
