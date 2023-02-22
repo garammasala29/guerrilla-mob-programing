@@ -11,3 +11,7 @@
 ## 第2回 Amidakuji
 - 問題
 [RegionalRubyKaigi レポート \(29\) みなと Ruby 会議 01](https://magazine.rubyist.net/articles/0039/0039-MinatoRubyKaigi01Report.html)
+
+## 第3回 Syukujitsu
+- 問題
+[【短命に終わった】国民の祝日\.csvをパースして変換するRubyプログラムとコード解説動画 \- Qiita](https://qiita.com/jnchito/items/b8a2ed3544c1dc36fb9d)
