@@ -9,7 +9,7 @@ class Syukujitsu
   end
 
   def parse(csv: DEFAULT_CSV_PATH)
-    CSV.read(csv)
+    CSV.read(csv, encoding: 'CP932:UTF-8')
   end
 
 end
