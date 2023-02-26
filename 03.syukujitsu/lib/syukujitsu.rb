@@ -8,14 +8,29 @@ class Syukujitsu
     self.new.parse
   end
 
-  def parse(csv: DEFAULT_CSV_PATH)
-    csv_rows = CSV.read(csv, encoding: 'CP932:UTF-8')
-    syukujitsu_hash = {}
-    csv_rows[2..].transpose.each_slice(2) do |keys, values|
-      dates = keys.compact.map { |key| Date.parse(key) }
-      syukujitsu_hash[dates.first.year] = dates.zip(values.compact).to_h
-    end
-    syukujitsu_hash
+  def self.write
+    self.new.write
   end
 
+  def write
+    parse
+  end
+
+  def parse
+    csv_rows = read_file
+    convert_to_hash(csv_rows)
+  end
+
+  def read_file(csv: DEFAULT_CSV_PATH)
+    CSV.read(csv, encoding: 'CP932:UTF-8')
+  end
+
+  def convert_to_hash(csv_rows)
+    syukujitsu = {}
+    csv_rows[2..].transpose.each_slice(2) do |keys, values|
+      dates = keys.compact.map { |key| Date.parse(key) }
+      syukujitsu[dates.first.year] = dates.zip(values.compact).to_h
+    end
+    syukujitsu
+  end
 end
