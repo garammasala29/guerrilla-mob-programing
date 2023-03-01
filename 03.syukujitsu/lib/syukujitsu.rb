@@ -12,10 +12,6 @@ class Syukujitsu
     self.new.write
   end
 
-  def write
-    parse
-  end
-
   def parse
     csv_rows = read_file
     convert_to_hash(csv_rows)
@@ -32,5 +28,17 @@ class Syukujitsu
       syukujitsu[dates.first.year] = dates.zip(values.compact).to_h
     end
     syukujitsu
+  end
+
+  def write
+    correct_csv_path = File::expand_path('../sourse/correct_syukujitsu.csv', __dir__)
+
+    CSV.open(correct_csv_path, "w", encoding: 'CP932') do |csv|
+      parse.each_value do |value|
+        value.each do |k, v|
+          csv << [k.strftime("%Y/%-m/%-d"),v]
+        end
+      end
+    end
   end
 end

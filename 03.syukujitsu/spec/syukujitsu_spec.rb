@@ -74,10 +74,10 @@ RSpec.describe Syukujitsu do
 
   example 'hash化したデータをCSVに書き込むことができる' do
     Syukujitsu.write
-    collect_syukujitsu_path = File::expand_path('../sourse/collect_syukujitsu.csv', __dir__)
-    collect_syukujitsu = CSV.read(collect_syukujitsu_path, encoding: 'CP932:UTF-8')
+    correct_syukujitsu_path = File::expand_path('../sourse/correct_syukujitsu.csv', __dir__)
+    correct_syukujitsu = CSV.read(correct_syukujitsu_path, encoding: 'CP932:UTF-8')
     answer_syukujitsu_path = File::expand_path('../sourse/answer_syukujitsu.csv', __dir__)
-    answer_syukujitsu = CSV.read(collect_syukujitsu_path, encoding: 'CP932:UTF-8')
-    expect(collect_syukujitsu).to eq answer_syukujitsu
+    answer_syukujitsu = CSV.read(answer_syukujitsu_path, encoding: 'CP932:UTF-8')
+    expect(correct_syukujitsu).to eq answer_syukujitsu
   end
 end
