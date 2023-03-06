@@ -15,3 +15,7 @@
 ## 第3回 Syukujitsu
 - 問題
 [【短命に終わった】国民の祝日\.csvをパースして変換するRubyプログラムとコード解説動画 \- Qiita](https://qiita.com/jnchito/items/b8a2ed3544c1dc36fb9d)
+
+## 第4回 Tenji
+- 問題
+[Rubyプログラミング問題にチャレンジ！ －改訂版・チェリー本発売記念－のカレンダー \| Advent Calendar 2021 \- Qiita](https://qiita.com/advent-calendar/2021/ruby-challenge)
