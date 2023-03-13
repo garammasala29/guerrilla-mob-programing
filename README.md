@@ -19,3 +19,7 @@
 ## 第4回 Tenji
 - 問題
 [Rubyプログラミング問題にチャレンジ！ －改訂版・チェリー本発売記念－のカレンダー \| Advent Calendar 2021 \- Qiita](https://qiita.com/advent-calendar/2021/ruby-challenge)
+
+## 第5回 Bingo
+- 問題
+[CodeIQに「ビンゴカード作成問題」を出題しました。みなさんの挑戦をお待ちしてます！ \- give IT a try](https://blog.jnito.com/entry/2015/02/09/101018)
